@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-
+import dotenv from 'dotenv'
+dotenv.config()
 mongoose.connect(
-    "mongodb+srv://riteshtelkar28:root@cluster0.kuuapkg.mongodb.net/"
+    process.env.MONGO_URI
 ).then(()=>console.log("database connected")).catch((error)=>console.log(error))

@@ -18,7 +18,7 @@ function CommonForm({formControls,formData,setFormData,onSubmit,buttonText}){
                             id={getControlItem.name}
                             type={getControlItem.type}
                             value={value}
-                            onchange = {event=> setFormData({
+                            onChange = {event=> setFormData({
                                 ...formData,
                                 [getControlItem.name]:event.target.value
                             })}
@@ -53,7 +53,7 @@ function CommonForm({formControls,formData,setFormData,onSubmit,buttonText}){
                             placeholder={getControlItem.placeholder}
                             id={getControlItem.id}
                             value={value}
-                            onchange = {event=> setFormData({
+                            onChange = {event=> setFormData({
                                 ...formData,
                                 [getControlItem.name]:event.target.value
                             })}
@@ -67,7 +67,7 @@ function CommonForm({formControls,formData,setFormData,onSubmit,buttonText}){
                             placeholder={getControlItem.placeholder}
                             id={getControlItem.name}
                             type={getControlItem.type}
-                            onchange = {event=> setFormData({
+                            onChange = {event=> setFormData({
                                 ...formData,
                                 [getControlItem.name]:event.target.value
                             })}

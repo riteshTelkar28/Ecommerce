@@ -10,7 +10,8 @@ const initialState = {
 }
 function AuthRegister(){
     const [formData,setFormData] = useState(initialState)
-
+    console.log(formData);
+    
     function onSubmit(){
 
     }
