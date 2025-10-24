@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
@@ -18,10 +18,19 @@ import ShoppingCheckout from './pages/shopping-view/checkout'
 import ShoppingListings from './pages/shopping-view/listing'
 import CheckAuth from './components/common/check-auth'
 import UnauthPage from './pages/unauth-page/unauth-page'
+import { useDispatch, useSelector } from 'react-redux'
+import { authenticateUser } from './store/auth-slice'
 
 function App() {
-  const isAuthenticated = false;
-  const user = null
+const {isAuthenticated,user,isLoading} = useSelector(state=> state.auth)
+const dispatch = useDispatch()
+
+
+useEffect(()=>{
+    dispatch(authenticateUser())
+},[dispatch])
+if(isLoading) return <div>Loading....</div>;
+
   return (
       <div className='flex flex-col overflow-hidden bg-white'>
         <Routes>
