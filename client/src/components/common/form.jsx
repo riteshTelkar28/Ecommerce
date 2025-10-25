@@ -1,8 +1,7 @@
 import React from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { Select, SelectContent, SelectTrigger, SelectValue } from "../ui/select";
-import { SelectItem } from "@radix-ui/react-select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 
@@ -25,7 +24,7 @@ function CommonForm({formControls,formData,setFormData,onSubmit,buttonText}){
                         />)
                 break;
             case 'select':
-                element = (<Select onvalueChange={
+                element = (<Select onValueChange={
                     (value)=> 
                         setFormData({
                             ...formData,
@@ -33,16 +32,16 @@ function CommonForm({formControls,formData,setFormData,onSubmit,buttonText}){
                         })
                 } value={value}>
                     <SelectTrigger className='w-full'>
-                        <SelectValue placeholder={getControlItem.placeholder}>
+                        <SelectValue placeholder={getControlItem.label}>
                         </SelectValue>
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className='bg-white'>
                         {
                             getControlItem.options && 
                             getControlItem.options.length > 0 ? 
-                            getControlItem.options.map(optionItem => <SelectItem key={optionItem.id} value={optionItem.id}>
+                            getControlItem.options.map((optionItem) => (<SelectItem className='hover:bg-gray-500' key={optionItem.id} value={optionItem.id}>
                                 {optionItem.label}
-                            </SelectItem>) : null
+                            </SelectItem>)) : null
                         }
                     </SelectContent>
                 </Select>)
