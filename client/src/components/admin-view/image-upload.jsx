@@ -4,8 +4,9 @@ import { Label } from "../ui/label";
 import { FileIcon, UploadCloudIcon, XIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import axios from "axios";
+import { Skeleton } from "../ui/skeleton";
 
-function ProductImageUpload({imageFile,setImageFile,uploadedImageUrl,setUploadedImageUrl,setImageLoadingState}){
+function ProductImageUpload({imageFile,isEditMode,setImageFile,uploadedImageUrl,setUploadedImageUrl,setImageLoadingState,imageLoadingState}){
     const inputRef = useRef(null)
 
     function handleImageFileChange (event){
@@ -55,13 +56,24 @@ function ProductImageUpload({imageFile,setImageFile,uploadedImageUrl,setUploaded
     return(
         <div className="w-full max-w-md mx-auto" >
             <Label className='text-lg font-semibold mb-2 block'>Upload Image</Label>
-            <div onDragOver={handleDragOver} onDrop={handleDrop} className="border-2 border-dashed rounded-lg p-4 mb-4">
-                <Input id='image-upload' className='hidden' type='file'  ref={inputRef} onChange={handleImageFileChange} />
+            <div onDragOver={handleDragOver} onDrop={handleDrop} className={` ${isEditMode ? 'opacity-50' : ''} border-2 border-dashed rounded-lg p-4 mb-4`}>
+                <Input
+                 id='image-upload'
+                 className='hidden'
+                 type='file'  
+                 ref={inputRef} 
+                 onChange={handleImageFileChange} 
+                 disabled = {isEditMode}
+                 />
                 {
-                    !imageFile ? <Label  className= 'flex flex-col items-center justify-center h-32 cursor-pointer' htmlFor='image-upload'>
+                    !imageFile ?
+                     <Label  className= {` ${isEditMode ? 'cursor-not-allowed' : ''} flex flex-col items-center justify-center h-32 cursor-pointer`} htmlFor='image-upload'>
                         <UploadCloudIcon className="w-10 h-10 mb-2" />
                         <span>Drag and drop or click to upload image</span>
-                    </Label> : <div className="flex items-center justify-between">
+                    </Label> :
+                    imageLoadingState ?
+                    <Skeleton className='h-10 bg-gray-100' />  :
+                     <div className="flex items-center justify-between">
                         <div className="flex items-center">
                             <FileIcon className="w-8 text-primary mr-2 h-8" />
                         </div>

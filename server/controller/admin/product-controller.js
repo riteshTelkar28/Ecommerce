@@ -24,10 +24,10 @@ export const handleImageUpload = async(request,response)=>{
 
 export const addProduct = async(request,response)=>{
     try{
-        const {image,title,description,category,brand,price,salesPrice,totalStock} = request.body
+        const {image,title,description,category,brand,price,salePrice,totalStock} = request.body
 
         const newlyCreatedProduct = new Product({
-            image,title,description,category,brand,price,salesPrice,totalStock
+            image,title,description,category,brand,price,salePrice,totalStock
         })
 
         await newlyCreatedProduct.save();
@@ -64,8 +64,8 @@ export const fetchProduct = async(request,response)=>{
 export const editProduct = async(request,response)=>{
     try{
         const {id} = request.params
-
-        const {image,title,description,category,brand,price,salesPrice,totalStock} = request.body 
+        console.log("id ",id)
+        const {image,title,description,category,brand,price,salePrice,totalStock} = request.body 
 
         const findProduct = await Product.findById(id)
 
@@ -80,10 +80,16 @@ export const editProduct = async(request,response)=>{
         findProduct.category = category || findProduct.category
         findProduct.brand = brand || findProduct.brand
         findProduct.price = price || findProduct.price
-        findProduct.salesPrice = salesPrice || findProduct.salesPrice
+        findProduct.salePrice = salePrice || findProduct.salePrice
         findProduct.totalStock = totalStock || findProduct.totalStock
         
+        // console.log(findProduct)
         await findProduct.save()
+        response.status(201).json({
+            success:true,
+            data:findProduct,
+            message:'Product Updated Successfully'
+        })
 
     }catch(error){
         console.log(error)
