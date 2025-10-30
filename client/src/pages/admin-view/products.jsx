@@ -4,7 +4,7 @@ import CommonForm from "@/components/common/form"
 import { addProductFormElements } from "@/components/config"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-import { addNewProducts, editProduct, fetchAllProducts } from "@/store/admin/product-slice"
+import { addNewProducts, deleteProduct, editProduct, fetchAllProducts } from "@/store/admin/product-slice"
 import React, { Fragment, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "sonner"
@@ -31,6 +31,16 @@ function AdminProducts(){
 
     // console.log("products ",productList);
     // console.log("isEditMode ",currentEditId)
+
+    function handleDelete(currentEditId){
+        // console.log(currentEditId);
+        
+        dispatch(deleteProduct(currentEditId)).then((data)=>{
+            if(data?.payload?.success){
+                dispatch(fetchAllProducts())
+            }
+        })
+    }
     
     function onSubmit(event){
         event.preventDefault();
@@ -71,6 +81,9 @@ function AdminProducts(){
         
     }
 
+    function isFormValid(){
+        return Object.keys(formData).map(key=>formData[key]!=='').every(item=>item)
+    }
 
     useEffect(()=>{
         dispatch(fetchAllProducts())
@@ -82,7 +95,14 @@ function AdminProducts(){
         <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
             {
                 productList.length > 0 ?
-                productList.map(productItem => <AdminProductTile setCurrentEditId={setCurrentEditId} setOpenCreateProductDiaglog={setOpenCreateProductDiaglog} setFormData={setFormData} product={productItem} />) :
+                productList.map(productItem => <AdminProductTile 
+                    setCurrentEditId={setCurrentEditId}
+                    setOpenCreateProductDiaglog={setOpenCreateProductDiaglog} 
+                    setFormData={setFormData} 
+                    product={productItem} 
+                    handleDelete={handleDelete}
+                    />
+                ) :
                 null
             }
         </div>
@@ -114,6 +134,7 @@ function AdminProducts(){
                         setFormData={setFormData}
                         buttonText={currentEditId !== null ? 'Update Product' :'Add Product'}
                         onSubmit={onSubmit}
+                        isBtnDisabled = {!isFormValid()}
                     />
                 </div>
             </SheetContent>

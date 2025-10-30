@@ -52,7 +52,8 @@ export const loginUser = async(request,response)=>{
             {
                 id:checkUser._id,
                 role:checkUser.role,
-                email:checkUser.email
+                email:checkUser.email,
+                userName:checkUser.userName
             },
             'CLIENT_SECRET_KEY',
             {expiresIn:'24h'}
@@ -64,7 +65,8 @@ export const loginUser = async(request,response)=>{
             user:{
                 email:checkUser.email,
                 role:checkUser.role,
-                id:checkUser._id
+                id:checkUser._id,
+                userName:checkUser.userName
             }
         })
 

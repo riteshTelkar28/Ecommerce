@@ -4,6 +4,8 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors'
 import authrouter from './routes/auth/auth-route.js';
 import productRouter from './routes/admin/products-route.js';
+import shopProductRouter from './routes/shop/product-routes.js';
+
 var app = express()
 const PORT = process.env.PORT || 5000;
 
@@ -26,6 +28,8 @@ app.use(express.json())
 
 app.use('/api/auth',authrouter)
 app.use('/api/admin/products',productRouter)
+app.use('/api/shop/products',shopProductRouter)
+
 
 app.listen(PORT,()=>{
     console.log("server started")

@@ -1,7 +1,7 @@
-import {Card, CardContent, CardFooter} from '../ui//card'
+import {Card, CardContent, CardFooter} from '../ui/card'
 import { Button } from '../ui/button';
 
-function AdminProductTile({product,setCurrentEditId,setOpenCreateProductDiaglog,setFormData}){
+function AdminProductTile({product,setCurrentEditId,setOpenCreateProductDiaglog,setFormData,handleDelete}){
     return(
         <Card className='w-full max-w-sm mx-auto pt-0' key={product._id}>
             <div>
@@ -24,7 +24,7 @@ function AdminProductTile({product,setCurrentEditId,setOpenCreateProductDiaglog,
                         setCurrentEditId(product?._id)
                         setFormData(product)
                     }} >Edit</Button>
-                    <Button>Delete</Button>
+                    <Button onClick={()=>handleDelete(product._id)} >Delete</Button>
                 </CardFooter>
             </div>
         </Card>
