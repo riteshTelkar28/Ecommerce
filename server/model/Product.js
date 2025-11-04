@@ -11,4 +11,4 @@ const productSchema = new mongoose.Schema({
     totalStock:Number
 },{timestamps:true})
 
-export default mongoose.model('productSchema',productSchema,'product')
+export default mongoose.model('Product',productSchema,'Proudct')

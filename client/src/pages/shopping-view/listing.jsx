@@ -3,12 +3,14 @@ import ProductFilter from "@/components/shopping-view/filter"
 import { Button } from "@/components/ui/button"
 import { DropdownMenuContent,DropdownMenu, DropdownMenuTrigger, DropdownMenuRadioGroup, DropdownMenuRadioItem } from "@/components/ui/dropdown-menu"
 import { fetchAllFilteredProducts, getProductDetails } from "@/store/shop/product-slice"
-import { ArrowUpDownIcon } from "lucide-react"
+import { ArrowUpDownIcon, Funnel } from "lucide-react"
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import ShoppingProductTile from "./product-tile"
 import {  useSearchParams } from "react-router-dom"
 import ProductDetailsDialog from "./product-details"
+import { addToCart, fetchFromCart } from "@/store/shop/cart-slice"
+import { toast } from "sonner"
 
 function createSearchParamsHelper(filterParams){
     const queryParams = [];
@@ -25,6 +27,8 @@ function ShoppingListings(){
     const dispatch  = useDispatch()
     const [searchParams,setSearchParams] = useSearchParams()
     const {productList,productDetails} = useSelector(state => state.shopProduct)
+    const {user} = useSelector(state=>state.auth)
+    
     const[filters,setFilters] = useState(null)
     const [sort,setSort] = useState(null)
     const [openDetailsDialog,setOpenDetailsDialog] = useState(false)
@@ -48,7 +52,19 @@ function ShoppingListings(){
     function handleProductDetails(getCurrentProductId){
         dispatch(getProductDetails(getCurrentProductId))
     }
-    console.log('product ',productDetails)
+
+    function handleAddToCart(getCurrentProductId){
+        console.log("getCurrentProductId ",getCurrentProductId);
+        dispatch(addToCart({userId:user.id,productId:getCurrentProductId,quantity:1})).then((data)=> {
+            if(data?.payload?.success){
+                console.log("user ",user);
+                dispatch(fetchFromCart(user?.id))
+                toast('Added to Cart ',{style:{color:'green',background:'white'}})
+            }
+        }
+        )
+        
+    }
 
     function handleSort(value){
         console.log(value);
@@ -112,7 +128,7 @@ function ShoppingListings(){
                     {
                         productList && productList.length >0 ?
                         productList.map((product)=>
-                            <ShoppingProductTile handleProductDetails={handleProductDetails} product={product} />
+                            <ShoppingProductTile handleAddToCart={handleAddToCart} handleProductDetails={handleProductDetails} product={product} />
                         ) : null
                     }
                 </div>
