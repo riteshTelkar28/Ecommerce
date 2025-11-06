@@ -1,8 +1,22 @@
+import { useSelector } from "react-redux";
 import { Button } from "../ui/button";
 import { SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
 import UserCartItemsWrapper from "./cart-items-content";
+import { ThreeDots } from "react-loader-spinner";
 
 function UserCartWrapper({cartItems}){
+    // console.log("cart items in wrapper ",cartItems.items);
+    const totalAmount = cartItems && cartItems?.items?.length ? cartItems.items.reduce(
+        (sum,eachItem)=> sum + (eachItem?.salePrice < eachItem?.price ? eachItem?.salePrice : eachItem?.price)* eachItem?.quantity,
+        0
+    ) : 0
+    
+    const {isLoading } = useSelector(state=>state.shopCart)
+    // console.log("isLoading ",isLoading);
+    
+
+    // console.log("total ",totalAmount);
+    
     return(
         <SheetContent className='bg-white sm:max-w-md '>
             <SheetHeader>
@@ -12,13 +26,15 @@ function UserCartWrapper({cartItems}){
             </SheetHeader>
             <div className="mt-8 space-y-4 ">
                 {
-                    cartItems && cartItems?.items?.length > 0 && cartItems?.items?.map((item)=><UserCartItemsWrapper cartItem={item} />)
+                    cartItems && cartItems?.items?.length > 0 && cartItems?.items?.map((item)=><UserCartItemsWrapper  cartItem={item} />)
                 }
             </div>
             <div className="mt-8 space-y-4">
                 <div className="flex justify-between">
                     <span className="font-bold">Total</span>
-                    <span className="font-bold">$1000</span>
+                    {
+                        isLoading ? <ThreeDots height='20px' width='30px' color="#4fa94d" /> : <span className="font-bold">${totalAmount}</span>
+                    }
                 </div>
             </div>
             <Button className='w-full'>

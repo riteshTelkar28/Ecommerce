@@ -2,14 +2,14 @@ import { sortOptions } from "@/components/config"
 import ProductFilter from "@/components/shopping-view/filter"
 import { Button } from "@/components/ui/button"
 import { DropdownMenuContent,DropdownMenu, DropdownMenuTrigger, DropdownMenuRadioGroup, DropdownMenuRadioItem } from "@/components/ui/dropdown-menu"
-import { fetchAllFilteredProducts, getProductDetails } from "@/store/shop/product-slice"
+import { fetchAllFilteredProducts, getProductDetails} from "@/store/shop/product-slice"
 import { ArrowUpDownIcon, Funnel } from "lucide-react"
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import ShoppingProductTile from "./product-tile"
 import {  useSearchParams } from "react-router-dom"
 import ProductDetailsDialog from "./product-details"
-import { addToCart, fetchFromCart } from "@/store/shop/cart-slice"
+import { addToCart, fetchFromCart, setProductId } from "@/store/shop/cart-slice"
 import { toast } from "sonner"
 
 function createSearchParamsHelper(filterParams){
@@ -55,6 +55,7 @@ function ShoppingListings(){
 
     function handleAddToCart(getCurrentProductId){
         console.log("getCurrentProductId ",getCurrentProductId);
+        dispatch(setProductId(getCurrentProductId))
         dispatch(addToCart({userId:user.id,productId:getCurrentProductId,quantity:1})).then((data)=> {
             if(data?.payload?.success){
                 console.log("user ",user);

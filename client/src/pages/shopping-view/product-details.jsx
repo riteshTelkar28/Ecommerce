@@ -3,12 +3,19 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { setProductDetails } from "@/store/shop/product-slice";
 import { StarIcon } from "lucide-react";
+import { useDispatch } from "react-redux";
 
 
 function ProductDetailsDialog({open,setOpen,productDetails}){
+    const dispatch = useDispatch()
+    function handleDialogClose(){
+        setOpen(false);
+        dispatch(setProductDetails())
+    }
     return(
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog open={open} onOpenChange={handleDialogClose}>
             <DialogContent className='grid grid-cols-2 gap-6 sm:p-12 max-w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw] bg-white'>
                 <div className="relative overflow-hidden rounded-lg">
                     <img 

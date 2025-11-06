@@ -10,14 +10,25 @@ import { Avatar, AvatarFallback } from "../ui/avatar";
 import { logoutUser } from "@/store/auth-slice";
 import UserCartWrapper from "./cart-wrapper";
 import { fetchFromCart } from "@/store/shop/cart-slice";
+import { Label } from "../ui/label";
 
 
 function MenuItems(){
+    const navigate = useNavigate()
+    function handleNavigate(getCurrentItem){
+        sessionStorage.removeItem('filters');
+        const currentFilter = getCurrentItem.id!=='home' ? {
+            category:[getCurrentItem.id]
+        } : null
+
+        sessionStorage.setItem('filters',JSON.stringify(currentFilter))
+        navigate(getCurrentItem.path)
+    }
     return (
         <nav className="flex flex-col  lg:mb-0 gap-6 lg:flex-row">
             {
                 shoppingViewHeaderMenuItems.map(mentItem => 
-                    <Link key={mentItem.id} to={mentItem.path} className="text-sm font-medium">{mentItem.label}</Link>
+                    <Label onClick={()=>handleNavigate(mentItem)} key={mentItem.id} className="text-sm font-medium cursor-pointer">{mentItem.label}</Label>
                 )
             }
 
@@ -37,7 +48,7 @@ function HeaderRightContent(){
     },[dispatch])
 
     const {cartItems} = useSelector(state=>state.shopCart)
-    console.log('cartItems',cartItems);
+    // console.log('cartItems',cartItems);
 
     function handleLogout(){
         dispatch(logoutUser())

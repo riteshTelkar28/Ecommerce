@@ -4,7 +4,7 @@ import axios from "axios"
 const initialState = {
     isLoading:true,
     productList:[],
-    productDetails:null
+    productDetails:null,
 }
 
 export const fetchAllFilteredProducts = createAsyncThunk('/products/fetchAllFilteredProducts',async({filterParams,sortParams})=>{
@@ -29,7 +29,12 @@ export const getProductDetails = createAsyncThunk('/products/getProductDetails',
 const ShopProductSlice = createSlice({
     name:'shopProducts',
     initialState,
-    reducers:{},
+    reducers:{
+        setProductDetails:(state)=>{
+            state.productDetails = null;
+        }
+
+    },
     extraReducers:(builder)=>{
         builder.addCase(fetchAllFilteredProducts.pending,(state)=>{
             state.isLoading = true
@@ -51,4 +56,5 @@ const ShopProductSlice = createSlice({
     }
 })
 
+export const {setProductDetails} = ShopProductSlice.actions;
 export default ShopProductSlice.reducer;

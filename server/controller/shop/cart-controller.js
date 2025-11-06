@@ -129,7 +129,7 @@ export const updateToCart = async(request,response)=>{
 
         cart.items[findCurrentProductIndex].quantity = quantity;
         await cart.save();
-        await cart.items.populate({
+        await cart.populate({
             path:'items.productId',
             select:'image title price salePrice',
         })

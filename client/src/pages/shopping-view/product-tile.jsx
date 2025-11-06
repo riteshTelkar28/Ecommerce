@@ -2,8 +2,15 @@ import { brandOptionsMap, categoryOptionsMap } from "@/components/config";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { ThreeDots } from "react-loader-spinner";
+import { useSelector } from "react-redux";
 
 function ShoppingProductTile({product,handleProductDetails,handleAddToCart}){
+    const {isLoading,productId} = useSelector(state=>state.shopCart)
+
+    // console.log(`${product.title}`,(product._id == productId))
+    
+
     return(
         <Card className='w-full max-w-sm mx-auto '>
             <div onClick={()=>handleProductDetails(product?._id)}>
@@ -32,8 +39,10 @@ function ShoppingProductTile({product,handleProductDetails,handleAddToCart}){
 
             </div>
             <CardFooter>
-                        <Button className='w-full' onClick={()=>handleAddToCart(product._id)}>
-                            Add to Cart
+                        <Button className='w-full hover:bg-gray-600' onClick={()=>handleAddToCart(product._id)}>
+                            {
+                                isLoading && (product._id==productId) ? <ThreeDots height='40px' width='40px'color="white"  /> : 'Add To Cart'
+                            }
                         </Button>
             </CardFooter>
         </Card>

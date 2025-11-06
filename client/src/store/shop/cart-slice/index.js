@@ -3,7 +3,8 @@ import axios from "axios"
 
 const initialState = {
     isLoading:false,
-    cartItems:[]
+    cartItems:[],
+    productId:null
 }
 
 export const addToCart = createAsyncThunk('cart/addToCart',async({userId,productId,quantity})=>{
@@ -38,7 +39,11 @@ export const deleteFromCart = createAsyncThunk('cart/deleteFromCart',async({user
 const shoppingCartSlice = createSlice({
     name:'shoppinCart',
     initialState,
-    reducers:{},
+    reducers:{
+                setProductId:(state,action)=>{
+            state.productId = action.payload
+        }
+    },
     extraReducers:(builder)=>{
         builder.addCase(addToCart.pending,(state)=>{
             state.isLoading = true;
@@ -75,5 +80,5 @@ const shoppingCartSlice = createSlice({
         })
     }
 })
-
+export const {setProductId} = shoppingCartSlice.actions;
 export default shoppingCartSlice.reducer;

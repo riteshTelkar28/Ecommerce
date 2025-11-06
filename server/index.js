@@ -6,6 +6,7 @@ import authrouter from './routes/auth/auth-route.js';
 import productRouter from './routes/admin/products-route.js';
 import shopProductRouter from './routes/shop/product-routes.js';
 import cartRouter from './routes/shop/cart-routes.js';
+import addressRouter from './routes/address/address-route.js';
 
 var app = express()
 const PORT = process.env.PORT || 5000;
@@ -31,6 +32,7 @@ app.use('/api/auth',authrouter)
 app.use('/api/admin/products',productRouter)
 app.use('/api/shop/products',shopProductRouter)
 app.use('/api/shop/cart',cartRouter)
+app.use('/api/shop/address',addressRouter)
 
 
 app.listen(PORT,()=>{
