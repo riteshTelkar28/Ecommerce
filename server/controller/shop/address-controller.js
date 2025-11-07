@@ -61,17 +61,20 @@ export const editAddress = async(request,response)=>{
 
         const {userId,addressId} = request.params;
         const formData = request.body;
+        console.log("form data ",formData);
         
-        if(!userId || addressId){
+        if(!userId || !addressId){
             return response.status(400).json({
                 success:false,
                 message:'user id or address id required'
             })
         }
-        const address  = await Address.findByIdAndUpdate({
+        const address  = await Address.findOneAndUpdate({
             _id:addressId,
             userId
         },formData,{new:true});
+        
+        console.log("address ",address);
         
         if(!address){
             return  response.status(404).json({
@@ -97,7 +100,7 @@ export const editAddress = async(request,response)=>{
 export const deleteAddress = async(request,response)=>{
     try{
         const {userId,addressId} = request.params;
-        if(!userId || addressId){
+        if(!userId || !addressId){
             return response.status(400).json({
                 success:false,
                 message:'user id or address id required'
@@ -108,6 +111,7 @@ export const deleteAddress = async(request,response)=>{
             _id:addressId,
             userId
         });
+
 
         if(!address){
             return  response.status(404).json({
