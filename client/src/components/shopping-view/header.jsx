@@ -46,7 +46,7 @@ function HeaderRightContent(){
     useEffect(()=>{
         dispatch(fetchFromCart(user?.id))
     },[dispatch])
-
+ 
     const {cartItems} = useSelector(state=>state.shopCart)
     // console.log('cartItems',cartItems);
 
@@ -60,7 +60,7 @@ function HeaderRightContent(){
                     <ShoppingCart className="w-6 h-6" />
                     <span className="sr-only" >User Cart</span>
                 </Button>
-                <UserCartWrapper cartItems={cartItems}/>
+                <UserCartWrapper setOpenCartSheet={setOpenCartSheet} cartItems={cartItems}/>
             </Sheet>
 
              <DropdownMenu>

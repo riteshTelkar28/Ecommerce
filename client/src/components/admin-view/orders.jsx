@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { Dialog } from "@radix-ui/react-dialog";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Dialog } from "../ui/dialog";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
-import ShoppingOrderDetails from "./order-details";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
+import { useState } from "react";
+import AdminOrderDetailsView from "./order-details";
 
-function ShoppingOrders(){
+function AdminOrdersView(){
     const [openDetailsDialog,setOpenDetailsDialog] = useState(false)
     return(
         <Card>
@@ -34,18 +34,16 @@ function ShoppingOrders(){
                             <TableCell>123456</TableCell>
                             <TableCell>$123456</TableCell>
                             <TableCell>
-                                <Dialog open={openDetailsDialog}
-                                onOpenChange={setOpenDetailsDialog}>
-                                    <Button onClick={()=>setOpenDetailsDialog(true)} >View Details</Button>
-                                    <ShoppingOrderDetails/>
+                                <Dialog open={openDetailsDialog} onOpenChange={setOpenDetailsDialog}>
+                                    <Button className={'cursor-pointer'} onClick={()=>setOpenDetailsDialog(true)}>View Details</Button>
+                                    <AdminOrderDetailsView />
                                 </Dialog>
                             </TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>
             </CardContent>
-        </Card>
-    )
+        </Card>    )
 }
 
-export default ShoppingOrders;
+export default AdminOrdersView;
