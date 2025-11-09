@@ -7,6 +7,7 @@ import productRouter from './routes/admin/products-route.js';
 import shopProductRouter from './routes/shop/product-routes.js';
 import cartRouter from './routes/shop/cart-routes.js';
 import addressRouter from './routes/address/address-route.js';
+import orderRouter from './routes/shop/order-route.js';
 
 var app = express()
 const PORT = process.env.PORT || 5000;
@@ -33,6 +34,7 @@ app.use('/api/admin/products',productRouter)
 app.use('/api/shop/products',shopProductRouter)
 app.use('/api/shop/cart',cartRouter)
 app.use('/api/shop/address',addressRouter)
+app.use('/api/shop/order',orderRouter)
 
 
 app.listen(PORT,()=>{

@@ -44,7 +44,7 @@ function UserCartWrapper({cartItems,setOpenCartSheet}){
                 navigate('/shop/checkout')
                 setOpenCartSheet(false)
             }}  className='w-full'>
-                 Checkout
+                 Checkout with paypal
             </Button>
         </SheetContent>
     )
