@@ -81,7 +81,7 @@ export const fetchFromCart = async(request,response)=>{
         productId:item.productId._id,
         image:item.productId.image,
         title:item.productId.title,
-        price:item.productId.price,
+        price:item.productId.salePrice < item.productId.price ? item.productId.salePrice : item.productId.price,
         salePrice:item.productId.salePrice,
         quantity:item.quantity
     }))

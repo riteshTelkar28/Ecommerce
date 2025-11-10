@@ -1,6 +1,7 @@
 import paypal from "../../helpers/paypal.js";
 import Order from "../../model/Order.js";
- 
+import Cart from "../../model/Cart.js";
+
 export const createOrder = async(request,response)=>{
     try{
         const {userId,cartItems,addressInfo,orderStatus,
@@ -10,7 +11,8 @@ export const createOrder = async(request,response)=>{
     orderDate,
     orderUpdateDate,
     paymentId,
-    payerId
+    payerId,
+    cartId
     } =  request.body;
     // console.log(request.body);
 
@@ -37,7 +39,7 @@ console.log("items ",items);
         transactions:[
             {
                 item_list:{
-                    items:{items}
+                    items:items
                 },
                 amount:{
                   currency:'USD',
@@ -49,11 +51,11 @@ console.log("items ",items);
         ]
     }
 
-    console.log(JSON.stringify(create_payment_json))
+    // console.log(JSON.stringify(create_payment_json))
 
     paypal.payment.create(create_payment_json,async(error,paymentInfo)=>{
         if(error){
-            console.log("error ",error.response.details);
+            // console.log("error ",error.response.details);
             return response.status(500).json({
                 success:false,
                 message:'error while creating paypal payment'
@@ -70,7 +72,8 @@ console.log("items ",items);
                 orderDate,
                 orderUpdateDate,
                 paymentId,
-                payerId
+                payerId,
+                cartId
             })
 
             await newlyCreatedOrder.save();
@@ -97,7 +100,30 @@ console.log("items ",items);
 
 export const capturePayment = async(request,response)=>{
     try{
+        const {paymentId,payerId,orderId} = request.body;
 
+        let order = await Order.findById(orderId);
+
+        if(!order){
+            return response.status(404).json({
+                success:false,
+                message:'order can not be found'
+            })
+        }
+
+        order.paymentStatus = 'paid';
+        order.orderStatus = 'confirmed';
+        order.paymentId = paymentId;
+        order.payerId = payerId;
+
+        const getCardId = order.cartId;
+        await Cart.findByIdAndDelete(getCardId);
+        response.status(200).json({
+            success:true,
+            message:'Order Confirmed',
+            data:order
+        })
+        await order.save();
     }catch(error){
         console.log(error);
         response.status(500).json({
@@ -105,5 +131,58 @@ export const capturePayment = async(request,response)=>{
             message:"error while adding order"
         })
         
+    }
+}
+
+export const getAllOrdersByUser = async(request,response)=>{
+    try{
+        console.log("in getAllOrdersByUser")
+        const {userId} = request.params;
+        console.log("userId ----",userId)
+                
+        const orders = await Order.find({userId});
+
+        if(!orders.length){
+            return response.status(404).json({
+                success:false,
+                message:'No orders found!'
+            })
+        }
+
+        response.status(200).json({
+            success:true,
+            data:orders
+        })
+
+    }catch(error){
+        console.log(error)
+        response.status(500).json({
+            success:false,
+            message:'cannot get orders'
+        })
+    }
+}
+
+export const getOrderDetails = async(request,response)=>{
+    try{
+        const {id} = request.params;
+        const order = await Order.findById(id);
+
+        if(!order)
+            return response.status(404).json({
+                success:false,
+                message:'Order note found'
+            })
+        
+        response.status(200).json({
+            success:true,
+            data:order
+        })
+    }catch(error){
+        console.log(error)
+        response.status(500).json({
+            success:false,
+            message:'cannot get orders'
+        })
     }
 }

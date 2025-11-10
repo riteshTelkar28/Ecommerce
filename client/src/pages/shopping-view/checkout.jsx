@@ -5,13 +5,15 @@ import { useDispatch, useSelector } from "react-redux"
 import UserCartItemsWrapper from "@/components/shopping-view/cart-items-content"
 import { Button } from "@/components/ui/button"
 import { createNewOrder } from "@/store/shop/order-slice"
+import { ThreeDots } from "react-loader-spinner"
+import { toast } from "sonner"
 function ShoppingCheckout(){
     const dispatch = useDispatch()
     const [currentSelectedAddress,setCurrentSelectedAddress] = useState(null)
-
+    const [isPaymentStart,setIsPaymentStart] = useState(false)
     const {cartItems} = useSelector(state=>state.shopCart)
     // console.log("cartItems ",cartItems);
-    
+    const {approvalURL,isLoading} = useSelector(state=>state.shopOrder)
     const {user} = useSelector(state=>state.auth)
         const totalAmount = cartItems && cartItems?.items?.length ? cartItems.items.reduce(
         (sum,eachItem)=> sum + (eachItem?.salePrice < eachItem?.price ? eachItem?.salePrice : eachItem?.price)* eachItem?.quantity,
@@ -21,15 +23,34 @@ function ShoppingCheckout(){
     // console.log("current address ",currentSelectedAddress )
 
     function handleInitialPaypalPayment(){
+        if(cartItems?.items?.length===0){
+            toast('Cart is empty',{
+                style:{
+                    backgroundColor:'red',
+                    color:'white'
+                }
+            })
+            return;
+        }
+        if(currentSelectedAddress===null){
+            toast('Select Address',{
+                style:{
+                    backgroundColor:'red',
+                    color:'white'
+                }
+            })
+            return;
+        }
         const orderData = {
                 userId:user?.id,
+                cartId: cartItems?._id,
                 cartItems:cartItems?.items?.map(singleItem => ({
                     productId:singleItem.productId,
                     title:singleItem.title,
                     image:singleItem.image,
-                    price:singleItem.saleprice<singleItem.price ? singleItem.salePrice : singleItem.price,
+                    price:singleItem.saleprice < singleItem.price ? singleItem.salePrice : singleItem.price,
                     quantity:singleItem.quantity
-                        })),
+                })),
                 addressInfo:{
                     addressId:currentSelectedAddress?._id,
                     address:currentSelectedAddress?.address,
@@ -50,8 +71,17 @@ function ShoppingCheckout(){
 
         // console.log("order data ",orderData)
         dispatch(createNewOrder(orderData)).then((data)=>{
-            console.log(data)
+            // console.log(data)
+            if(data?.payload?.success){
+                setIsPaymentStart(true)
+            }else{
+                setIsPaymentStart(false)
+            }
         })
+    }
+
+    if(approvalURL){
+        window.location.href = approvalURL
     }
     return(
         <div className="flex flex-col ">
@@ -77,7 +107,7 @@ function ShoppingCheckout(){
                         </div>
                     </div>
                     <div className="mt-4 w-full">
-                        <Button className={'w-full'} onClick={handleInitialPaypalPayment} >Checkout With Paypal</Button>
+                        <Button className={'w-full'} onClick={handleInitialPaypalPayment} >{isLoading ? <ThreeDots height={'40px'} width={'40px'} color="white" />: 'Checkout with Paypal'}</Button>
                     </div>
                 </div>
 

@@ -3,7 +3,6 @@ import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteFromCart, updateToCart } from "@/store/shop/cart-slice";
 import { toast } from "sonner";
-import { Oval, ThreeDots } from "react-loader-spinner";
 
 
 function UserCartItemsWrapper({cartItem}){

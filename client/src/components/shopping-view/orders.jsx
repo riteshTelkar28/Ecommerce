@@ -1,12 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Dialog } from "../ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import ShoppingOrderDetails from "./order-details";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllOrdersByUser, getOrderDetails, resetOrderDetails } from "@/store/shop/order-slice";
+import { Badge } from "../ui/badge";
 
 function ShoppingOrders(){
     const [openDetailsDialog,setOpenDetailsDialog] = useState(false)
+    const dispatch = useDispatch()
+    const {user} = useSelector(state => state.auth)
+    const {orderList,orderDetails} = useSelector(state=>state.shopOrder);
+
+    function fetchOrderDetails(id){
+        dispatch(getOrderDetails(id))
+    }
+
+    useEffect(()=>{
+        dispatch(getAllOrdersByUser(user?.id))
+    },[dispatch])
+
+    useEffect(()=>{
+        if(orderDetails !== null) setOpenDetailsDialog(true)
+    },[orderDetails])
+
+
+    console.log("order details ",orderDetails)
     return(
         <Card>
             <CardHeader>
@@ -28,19 +49,29 @@ function ShoppingOrders(){
                         </TableRow>
                     </TableHeader>
                     <TableBody>
+                    {
+                        orderList && orderList.map((orderItem)=>
+                        (
                         <TableRow>
-                            <TableCell>123456</TableCell>
-                            <TableCell>123456</TableCell>
-                            <TableCell>123456</TableCell>
-                            <TableCell>$123456</TableCell>
+                            <TableCell>{orderItem?._id}</TableCell>
+                            <TableCell>{orderItem?.orderDate.split('T')[0]}</TableCell>
+                            <TableCell>
+                                <Badge className={`py-1 px-3 ${orderItem?.orderStatus==='confirmed' ? 'bg-green-500':'bg-red-600'}`} >{orderItem?.orderStatus}</Badge>
+                            </TableCell>
+                            <TableCell>${orderItem?.totalAmount}</TableCell>
                             <TableCell>
                                 <Dialog open={openDetailsDialog}
-                                onOpenChange={setOpenDetailsDialog}>
-                                    <Button onClick={()=>setOpenDetailsDialog(true)} >View Details</Button>
-                                    <ShoppingOrderDetails/>
+                                onOpenChange={
+                                    ()=>{setOpenDetailsDialog(false)
+                                    dispatch(resetOrderDetails())}
+                                }>
+                                    <Button onClick={()=>fetchOrderDetails(orderItem?._id)} >View Details</Button>
+                                    <ShoppingOrderDetails orderDetails={orderDetails}/>
                                 </Dialog>
                             </TableCell>
-                        </TableRow>
+                        </TableRow> 
+                        ))
+                    }
                     </TableBody>
                 </Table>
             </CardContent>

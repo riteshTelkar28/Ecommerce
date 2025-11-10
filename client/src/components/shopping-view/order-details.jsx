@@ -1,28 +1,33 @@
 import { DialogContent } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
+import { Badge } from "../ui/badge";
+import { useSelector } from "react-redux";
 
 
-function ShoppingOrderDetails(){
+function ShoppingOrderDetails({orderDetails}){
+    const {user} = useSelector(state=>state.auth)
     return(
         <DialogContent  className='sm:max-w-[600px]  bg-white'>
             <div className="grid gap6 mt-2">
                 <div className="grid gap-2">
                     <div className="flex mt2 items-center justify-between">
                         <p className="font-medium">Order Id</p>
-                        <Label>123456</Label>
+                        <Label>{orderDetails?._id}</Label>
                     </div>
                     <div className="flex mt2 items-center justify-between">
                         <p className="font-medium">Order Date</p>
-                        <Label>27/12/24</Label>
+                        <Label>{orderDetails?.orderDate.split('T')[0]}</Label>
                     </div>
                     <div className="flex mt2 items-center justify-between">
                         <p className="font-medium">Order Status</p>
-                        <Label>True</Label>
+                        <Label>
+                                    <Badge className={`py-1 px-3 ${orderDetails?.orderStatus==='confirmed' ? 'bg-green-500':'bg-red-600'}`} >{orderDetails?.orderStatus}</Badge>
+                        </Label>
                     </div>
                     <div className="flex mt2 items-center justify-between">
                         <p className="font-medium">Order Price</p>
-                        <Label>$500</Label>
+                        <Label>${orderDetails?.totalAmount}</Label>
                     </div>
                     
                 </div>
@@ -31,10 +36,14 @@ function ShoppingOrderDetails(){
                     <div className="grid gap-2">
                         <div className="font-medium">Order Details</div>
                         <ul className="grid gap-3">
-                            <li className="flex items-center justify-between">
-                                <span>Product One</span>
-                                <span>$100</span>
+                        {
+                            orderDetails?.cartItems.map((eachItem)=>(
+                                <li className="flex items-center justify-between">
+                                <span>{eachItem?.title}</span>
+                                <span>${eachItem?.price}</span>
                             </li>
+                            ))
+                        } 
                         </ul>
                     </div>
                 </div>
@@ -42,12 +51,12 @@ function ShoppingOrderDetails(){
                     <div className="grid gap-2">
                         <div className="font-medium">Shipping Info</div>
                         <div className="grid gap-0.5 ">
-                            <span>John doe</span>
-                            <span>Address</span>
-                            <span>City</span>
-                            <span>Pincode</span>
-                            <span>Phone</span>
-                            <span>notes</span>
+                            <span>{user?.userName}</span>
+                            <span>{orderDetails?.addressInfo?.address}</span>
+                            <span>{orderDetails?.addressInfo?.city}</span>
+                            <span>{orderDetails?.addressInfo?.city}</span>
+                            <span>{orderDetails?.addressInfo?.phone}</span>
+                            <span>{orderDetails?.addressInfo?.pincode}</span>
                         </div>
                     </div>
                 </div>

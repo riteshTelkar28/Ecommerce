@@ -36,6 +36,7 @@ function UserCartWrapper({cartItems,setOpenCartSheet}){
                 <div className="flex justify-between">
                     <span className="font-bold">Total</span>
                     {
+                        totalAmount==0 ? <span className="font-bold">${totalAmount}</span> : 
                         isLoading ? <ThreeDots height='20px' width='30px' color="#4fa94d" /> : <span className="font-bold">${totalAmount}</span>
                     }
                 </div>
@@ -44,7 +45,7 @@ function UserCartWrapper({cartItems,setOpenCartSheet}){
                 navigate('/shop/checkout')
                 setOpenCartSheet(false)
             }}  className='w-full'>
-                 Checkout with paypal
+                 Checkout
             </Button>
         </SheetContent>
     )
