@@ -26,8 +26,8 @@ function ShoppingOrders(){
         if(orderDetails !== null) setOpenDetailsDialog(true)
     },[orderDetails])
 
-
-    console.log("order details ",orderDetails)
+    
+    // console.log("order details ",orderDetails)
     return(
         <Card>
             <CardHeader>

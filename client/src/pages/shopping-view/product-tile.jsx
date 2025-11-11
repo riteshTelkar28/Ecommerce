@@ -12,12 +12,16 @@ function ShoppingProductTile({product,handleProductDetails,handleAddToCart}){
     
 
     return(
-        <Card className='w-full max-w-sm mx-auto '>
+        <Card className='w-full max-w-sm mx-auto pt-0 '>
             <div onClick={()=>handleProductDetails(product?._id)}>
                 <div className="relative ">
                     <img src={product.image} alt={product.title} className="w-full h-[300px]  object-cover rounded-t-lg" />
                     {
-                        product?.salePrice > 0 ? 
+                        product?.totalStock === 0 ?
+                        <Badge className='absolute top-2 left-2 bg-red-500 hover:bg-red-600'>Out of Order</Badge> :
+                        product?.totalStock <10 ? 
+                        <Badge className='absolute top-2 left-2 bg-red-500 hover:bg-red-600'>{`Only ${product?.totalStock} items left`}</Badge> 
+                        : product?.salePrice > 0 ? 
                         <Badge className='absolute top-2 left-2 bg-red-500 hover:bg-red-600'>Sale</Badge> : null
                     }
                 </div>
@@ -39,11 +43,21 @@ function ShoppingProductTile({product,handleProductDetails,handleAddToCart}){
 
             </div>
             <CardFooter>
-                        <Button className='w-full hover:bg-gray-600' onClick={()=>handleAddToCart(product._id)}>
+            {
+                product?.totalStock ===0 ?
+                        <Button className='w-full hover:bg-gray-600 opacity-65 cursor-not-allowed' onClick={()=>handleAddToCart(product._id,product?.totalStock)}>
+                            {
+                                isLoading && (product._id==productId) ? <ThreeDots height='40px' width='40px'color="white"  /> : 'Add To Cart'
+                            } 
+                        </Button>                
+                :
+                            <Button className='w-full hover:bg-gray-600' onClick={()=>handleAddToCart(product._id,product?.totalStock)}>
                             {
                                 isLoading && (product._id==productId) ? <ThreeDots height='40px' width='40px'color="white"  /> : 'Add To Cart'
                             }
                         </Button>
+            }
+
             </CardFooter>
         </Card>
     )

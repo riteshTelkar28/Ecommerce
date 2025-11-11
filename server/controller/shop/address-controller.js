@@ -19,7 +19,8 @@ export const addAddress = async(request,response)=>{
         await newlyCreatedAddress.save();
         response.status(200).json({
             success:true,
-            data:newlyCreatedAddress
+            data:newlyCreatedAddress,
+            message:'Address Added!'
         })
     }catch(error){
         console.log(error)
@@ -61,7 +62,7 @@ export const editAddress = async(request,response)=>{
 
         const {userId,addressId} = request.params;
         const formData = request.body;
-        console.log("form data ",formData);
+        // console.log("form data ",formData);
         
         if(!userId || !addressId){
             return response.status(400).json({
@@ -74,7 +75,7 @@ export const editAddress = async(request,response)=>{
             userId
         },formData,{new:true});
         
-        console.log("address ",address);
+        // console.log("address ",address);
         
         if(!address){
             return  response.status(404).json({
@@ -85,14 +86,15 @@ export const editAddress = async(request,response)=>{
 
         response.status(200).json({
             success:true,
-            data:address
+            data:address,
+            message:"Updated Successfully!"
         })
 
     }catch(error){
         console.log(error)
         response.status(500).json({
             success:false,
-            message:'error'
+            message:'Something Went Wrong'
         })
     }
 }
@@ -121,7 +123,8 @@ export const deleteAddress = async(request,response)=>{
         }
         response.status(200).json({
             success:true,
-            data:address
+            data:address,
+            message:"Deleted Successfully!"
         })
 
         

@@ -74,7 +74,7 @@ export const loginUser = async(request,response)=>{
         console.log(error);
         return  response.status(500).json({
             status:false,
-            message:'error while login'
+            message:'Something Went Wrong'
         })        
     }
 }

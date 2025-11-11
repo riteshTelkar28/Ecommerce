@@ -23,7 +23,7 @@ function AdminOrderDetailsView({orderDetails}){
             if(data?.payload?.success){
                 dispatch(getAllOrdersForAdmin())
                 dispatch(getOrderDetails(orderDetails?._id))
-                toast('Order Updated Successfully',{
+                toast(data.payload?.message,{
                     style:{
                         backgroundColor:'white',
                         color:'green'

@@ -33,7 +33,8 @@ export const addProduct = async(request,response)=>{
         await newlyCreatedProduct.save();
         response.status(201).json({
             success:true,
-            data:newlyCreatedProduct
+            data:newlyCreatedProduct,
+            message:'Product Added Successfully'
 
         })
     }catch(error){
@@ -112,7 +113,7 @@ export const deleteProduct = async(request,response)=>{
 
         response.status(200).json({
             success:true,
-            message:'product deleted'
+            message:'Product Deleted Successfully!'
         })
 
     }catch(error){

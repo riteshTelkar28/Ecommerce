@@ -11,16 +11,16 @@ function UserCartItemsWrapper({cartItem}){
     function handleItemDelete(getCurrentItem){
         dispatch(deleteFromCart({userId:user?.id,productId:getCurrentItem?.productId})).then((data)=>{
             if(data?.payload.success){
-                toast('cart item deleted',{style:{color:'red',background:'white'}})
+                toast(data?.payload?.message,{style:{color:'red',background:'white'}})
             }
         })
     }
     
     function handleUpdateQuantity(getCurrentItem,typeOfAction){
-        console.log("item for updation ",getCurrentItem,typeOfAction)
+        // console.log("item for updation ",getCurrentItem,typeOfAction)
         dispatch(updateToCart({userId:user?.id,productId:getCurrentItem?.productId,quantity:typeOfAction=='plus' ? getCurrentItem?.quantity+1 : getCurrentItem?.quantity -1 })).then((data)=>{
             if(data?.payload.success){
-                toast('cart item updated',{style:{color:'green',background:'white'}})
+                toast(data?.payload?.message,{style:{color:'green',background:'white'}})
             }
         })
     }

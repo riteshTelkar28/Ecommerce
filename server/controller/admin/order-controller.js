@@ -48,7 +48,7 @@ export const updateOrderStatus= async(request,response)=>{
         
         response.status(200).json({
             success:true,
-            message:'order status successfully',
+            message:'Updated Successfully!',
             data:result
         })
 
@@ -68,7 +68,7 @@ export const getOrderDetails = async(request,response)=>{
         if(!order)
             return response.status(404).json({
                 success:false,
-                message:'Order note found'
+                message:'Order not found'
             })
         
         response.status(200).json({

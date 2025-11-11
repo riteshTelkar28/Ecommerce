@@ -5,10 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { setProductDetails } from "@/store/shop/product-slice";
 import { StarIcon } from "lucide-react";
-import { useDispatch } from "react-redux";
+import { ThreeDots } from "react-loader-spinner";
+import { useDispatch, useSelector } from "react-redux";
 
 
-function ProductDetailsDialog({open,setOpen,productDetails}){
+function ProductDetailsDialog({open,setOpen,productDetails,handleAddToCart}){
+    // console.log("productDetails ",productDetails);
+    const {isLoading} = useSelector(state=>state.shopCart)
+
     const dispatch = useDispatch()
     function handleDialogClose(){
         setOpen(false);
@@ -46,7 +50,14 @@ function ProductDetailsDialog({open,setOpen,productDetails}){
                     </div>
                     
                     <div className="mt-5 mb-5 ">
-                        <Button className='w-full'>Add to Cart</Button>
+                        <Button className='w-full' 
+                        onClick = {()=>handleAddToCart(productDetails?._id,productDetails?.totalStock)}
+                        >
+                            {
+                                isLoading  ? <ThreeDots height='40px' width='40px'color="white"  /> : 'Add To Cart'
+                            }
+                            
+                        </Button>
                     </div>
                     <Separator className='bg-black' />
                     <div className="max-h-[300px] overflow-auto">

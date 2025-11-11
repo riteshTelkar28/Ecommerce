@@ -43,7 +43,7 @@ function Address({setCurrentSelectedAddress}){
                 dispatch(fetchAddress(user?.id))
                 setCurrentAddressId(null);
                 setFormData(initialAddressFormData)
-                toast('Adress Updated Successfully',{
+                toast(data?.payload?.message,{
                     style:{
                         color:'green',
                         background:'white'
@@ -58,7 +58,7 @@ function Address({setCurrentSelectedAddress}){
             if(data?.payload?.success){
                 dispatch(fetchAddress(user?.id))
                 setFormData(initialAddressFormData)
-                toast('Adress Added Successfully',{
+                toast(data?.payload?.message,{
                     style:{
                         color:'green',
                         background:'white'
@@ -69,7 +69,7 @@ function Address({setCurrentSelectedAddress}){
         })
     } 
 
-    console.log("addressList ",addressList)
+    // console.log("addressList ",addressList)
 
     function isFormValid(){
         return Object.keys(formData).map(key => formData[key].trim() !== '').every((item)=>item)
@@ -81,7 +81,7 @@ function Address({setCurrentSelectedAddress}){
         dispatch(deleteAddress({userId:user?.id,addressId:getCurrentAddress?._id})).then((data)=>{
             if(data.payload?.success){
                 dispatch(fetchAddress(user?.id))
-                toast('Deleted Successfully',{
+                toast(data?.payload?.message,{
                     style:{
                         color:'red',
                         background:'white',

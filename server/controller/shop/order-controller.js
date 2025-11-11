@@ -1,6 +1,7 @@
 import paypal from "../../helpers/paypal.js";
 import Order from "../../model/Order.js";
 import Cart from "../../model/Cart.js";
+import Product from "../../model/Product.js";
 
 export const createOrder = async(request,response)=>{
     try{
@@ -116,6 +117,19 @@ export const capturePayment = async(request,response)=>{
         order.paymentId = paymentId;
         order.payerId = payerId;
 
+        for(let item of order.cartItems){
+            let product = await Product.findById(item.productId);
+            
+            if(!product){
+                return response.status(404).json({
+                    success:false,
+                    message:'Not enough stock for this product'
+                })
+            }
+
+            product.totalStock -= item.quantity;
+            await product.save()
+        }
         const getCardId = order.cartId;
         await Cart.findByIdAndDelete(getCardId);
         response.status(200).json({
@@ -158,7 +172,7 @@ export const getAllOrdersByUser = async(request,response)=>{
         console.log(error)
         response.status(500).json({
             success:false,
-            message:'cannot get orders'
+            message:'Something Went Wrong'
         })
     }
 }
@@ -171,7 +185,7 @@ export const getOrderDetails = async(request,response)=>{
         if(!order)
             return response.status(404).json({
                 success:false,
-                message:'Order note found'
+                message:'Order not found'
             })
         
         response.status(200).json({

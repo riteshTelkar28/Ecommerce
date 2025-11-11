@@ -28,7 +28,7 @@ function ShoppingListings(){
     const [searchParams,setSearchParams] = useSearchParams()
     const {productList,productDetails} = useSelector(state => state.shopProduct)
     const {user} = useSelector(state=>state.auth)
-    
+    const {cartItems} = useSelector(state=>state.shopCart)
     const[filters,setFilters] = useState(null)
     const [sort,setSort] = useState(null)
     const [openDetailsDialog,setOpenDetailsDialog] = useState(false)
@@ -54,8 +54,33 @@ function ShoppingListings(){
         dispatch(getProductDetails(getCurrentProductId))
     }
 
-    function handleAddToCart(getCurrentProductId){
-        console.log("getCurrentProductId ",getCurrentProductId);
+    function handleAddToCart(getCurrentProductId,getTotalStock){
+        // console.log("getCurrentProductId ",getCurrentProductId);
+        console.log("get getTotalStock ", getTotalStock);
+        
+        console.log("cart Items ",cartItems);
+        let getCartItems = cartItems.items || [];
+        if(getCartItems.length){
+            const indexOfCurrentItems = getCartItems.findIndex(item=>item.productId === getCurrentProductId)
+            if(indexOfCurrentItems > -1){
+                const quantity = getCartItems[indexOfCurrentItems].quantity;
+                if(quantity + 1 > getTotalStock){
+                    toast(`only ${quantity} quantity can be added`,{
+                        style:{
+                            color:'white',
+                            backgroundColor:'red',
+                            border:'2px '
+                        }
+                    })
+
+
+                    return;
+                }
+
+            }
+        }
+
+        
         dispatch(setProductId(getCurrentProductId))
         dispatch(addToCart({userId:user.id,productId:getCurrentProductId,quantity:1})).then((data)=> {
             if(data?.payload?.success){
@@ -135,7 +160,7 @@ function ShoppingListings(){
                     }
                 </div>
             </div>
-            <ProductDetailsDialog open={openDetailsDialog} setOpen={setOpenDetailsDialog} productDetails={productDetails} />
+            <ProductDetailsDialog open={openDetailsDialog} setOpen={setOpenDetailsDialog} handleAddToCart={handleAddToCart} productDetails={productDetails} />
         </div>
     )
 }

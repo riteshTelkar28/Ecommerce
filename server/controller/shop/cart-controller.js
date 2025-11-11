@@ -36,7 +36,8 @@ export const addToCart = async(request,response)=>{
         await cart.save();
         response.status(200).json({
             success:true,
-            data:cart
+            data:cart,
+            message:'Added to Cart'
         })
     }catch(error){
         console.log(error);
@@ -50,7 +51,7 @@ export const addToCart = async(request,response)=>{
 export const fetchFromCart = async(request,response)=>{
     try{
         const userId = request.params.userId;
-        console.log("userId ",userId, typeof userId);
+        // console.log("userId ",userId, typeof userId);
         
         if(!userId){
         return response.status(404).json({
@@ -147,7 +148,8 @@ export const updateToCart = async(request,response)=>{
             data:{
                 ...cart._doc,
                 items:populateCartItems
-            }
+            },
+            message:'Updated Successfully'
         })
     }catch(error){
         console.log(error);
@@ -198,7 +200,8 @@ export const deleteFromCart = async(request,response)=>{
             data:{
                 ...cart._doc,
                 items:populateCartItems
-            }
+            },
+            message:'Deleted Successfully!'
         })
     }catch(error){
         console.log(error);
