@@ -22,12 +22,23 @@ function ShoppingOrderDetails({orderDetails}){
                     <div className="flex mt2 items-center justify-between">
                         <p className="font-medium">Order Status</p>
                         <Label>
-                                    <Badge className={`py-1 px-3 ${orderDetails?.orderStatus==='confirmed' ? 'bg-green-500':'bg-red-600'}`} >{orderDetails?.orderStatus}</Badge>
+                                    <Badge className={`py-1 px-3 ${orderDetails?.orderStatus==='confirmed' ?
+                                 'bg-green-500':
+                                 orderDetails?.orderStatus == 'rejected' ?
+                                 'bg-red-600' : 'bg-blue-600'} `} >{orderDetails?.orderStatus}</Badge>
                         </Label>
                     </div>
                     <div className="flex mt2 items-center justify-between">
                         <p className="font-medium">Order Price</p>
                         <Label>${orderDetails?.totalAmount}</Label>
+                    </div>
+                    <div className="flex mt2 items-center justify-between">
+                        <p className="font-medium">Payment Method</p>
+                        <Label>{orderDetails?.paymentMethod}</Label>
+                    </div>
+                    <div className="flex mt2 items-center justify-between">
+                        <p className="font-medium">Payment Status</p>
+                        <Label>${orderDetails?.paymentStatus}</Label>
                     </div>
                     
                 </div>
@@ -40,6 +51,7 @@ function ShoppingOrderDetails({orderDetails}){
                             orderDetails?.cartItems.map((eachItem)=>(
                                 <li className="flex items-center justify-between">
                                 <span>{eachItem?.title}</span>
+                                <span>Quantity : {eachItem?.quantity}</span>
                                 <span>${eachItem?.price}</span>
                             </li>
                             ))

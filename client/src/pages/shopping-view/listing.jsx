@@ -33,6 +33,7 @@ function ShoppingListings(){
     const [sort,setSort] = useState(null)
     const [openDetailsDialog,setOpenDetailsDialog] = useState(false)
 
+    const categorySearchParams = searchParams.get('category')
     useEffect(()=>{
         if(productDetails!==null) setOpenDetailsDialog(true)
     },[productDetails])
@@ -97,7 +98,7 @@ function ShoppingListings(){
     useEffect(()=>{
         setSort('price-lowtohigh')
         setFilters(JSON.parse(sessionStorage.getItem('filters')) || {})
-    },[])
+    },[categorySearchParams])
     
     return(
         <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 p-4 md:p-6">
