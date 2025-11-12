@@ -7,6 +7,8 @@ import { toast } from "sonner";
 
 function UserCartItemsWrapper({cartItem}){
     const {user} = useSelector(state => state.auth)
+    const {cartItems} = useSelector(state=>state.shopCart)
+    const {productList} = useSelector(state=>state.shopProduct)
     const dispatch = useDispatch()
     function handleItemDelete(getCurrentItem){
         dispatch(deleteFromCart({userId:user?.id,productId:getCurrentItem?.productId})).then((data)=>{
@@ -17,12 +19,32 @@ function UserCartItemsWrapper({cartItem}){
     }
     
     function handleUpdateQuantity(getCurrentItem,typeOfAction){
-        // console.log("item for updation ",getCurrentItem,typeOfAction)
+        // console.log("getCurrentItem ",getCurrentItem);
+        
+        // console.log("cart Items ",cartItems);
+        console.log("product list ",productList);
+        const getItem = cartItems.items || []
+        const indexOfProduct = productList.findIndex(item => item._id === getCurrentItem.productId)
+        // console.log("index ",indexOfProduct);
+        
+        
+        if(getCurrentItem?.quantity + 1 > productList[indexOfProduct]?.totalStock && typeOfAction=='plus'){
+                                toast(`only ${getCurrentItem.quantity} quantity can be added`,{
+                                    style:{
+                                        color:'white',
+                                        backgroundColor:'red',
+                                        border:'2px '
+                                    }
+                                })
+                                return
+        }else{
         dispatch(updateToCart({userId:user?.id,productId:getCurrentItem?.productId,quantity:typeOfAction=='plus' ? getCurrentItem?.quantity+1 : getCurrentItem?.quantity -1 })).then((data)=>{
             if(data?.payload.success){
                 toast(data?.payload?.message,{style:{color:'green',background:'white'}})
             }
         })
+        }
+
     }
     return(
         <div className="flex items-center space-x-4">
@@ -38,7 +60,7 @@ function UserCartItemsWrapper({cartItem}){
                     <span className="font-semibold">{cartItem?.quantity}</span>
                     <Button variant='outline' className='h-8 w-8 rounded-full cursor-pointer' size='icon' onClick={()=>handleUpdateQuantity(cartItem,'plus')} >
                         <Plus className="w-4 h-4" />
-                        <span className="sr-only">Decrease</span>
+                        <span className="sr-only">Increase</span>
                         
                     </Button>
                 </div>

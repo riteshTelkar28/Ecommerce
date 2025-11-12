@@ -54,11 +54,11 @@ export const fetchFromCart = async(request,response)=>{
         // console.log("userId ",userId, typeof userId);
         
         if(!userId){
-        return response.status(404).json({
-            success:false,
-            message:'user not found'
-        }) 
-    }
+            return response.status(404).json({
+                success:false,
+                message:'user not found'
+            }) 
+        }
 
         const cart = await Cart.findOne({userId}).populate({
             path:'items.productId',

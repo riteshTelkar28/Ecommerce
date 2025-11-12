@@ -19,7 +19,8 @@ function MenuItems(){
     const [searchParams,setSearchParams] = useSearchParams()
     function handleNavigate(getCurrentItem){
         sessionStorage.removeItem('filters');
-        const currentFilter = getCurrentItem.id!=='home' && getCurrentItem.id!=='product' ? {
+        const currentFilter = getCurrentItem.id!=='home' && getCurrentItem.id!=='product' &&
+        getCurrentItem.id!=='search' ? {
             category:[getCurrentItem.id]
         } : null
 

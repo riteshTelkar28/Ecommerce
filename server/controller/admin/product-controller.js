@@ -1,4 +1,5 @@
 import { imageUploadUtil } from "../../helpers/cloudinary.js";
+import Cart from "../../model/Cart.js";
 import Product from "../../model/Product.js";
 
 export const handleImageUpload = async(request,response)=>{
@@ -111,6 +112,15 @@ export const deleteProduct = async(request,response)=>{
             message:"not found"
         })
 
+        const deletedProduct = await Cart.updateMany(
+            {},
+            {
+                $pull : {items:{_id:id}}
+            }
+        )
+
+        // console.log("deleted Product ",deleteProduct);
+        
         response.status(200).json({
             success:true,
             message:'Product Deleted Successfully!'
@@ -124,6 +134,3 @@ export const deleteProduct = async(request,response)=>{
         })
     }
 }
-
-
-

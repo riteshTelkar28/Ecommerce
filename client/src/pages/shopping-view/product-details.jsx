@@ -30,7 +30,7 @@ function ProductDetailsDialog({open,setOpen,productDetails,handleAddToCart}){
                     />
                 </div>
                 <div>
-                    <div>
+                    <div>``
                         <h1 className="text-3xl font-extrabold">{productDetails?.title}</h1>
                         <p className="text-muted-foreground mb-5 mt-4">{productDetails?.description}</p>
                     </div>
