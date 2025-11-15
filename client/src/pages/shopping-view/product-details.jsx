@@ -1,7 +1,9 @@
+import StarRatingComponent from "@/components/common/star-rating";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { setProductDetails } from "@/store/shop/product-slice";
 import { StarIcon } from "lucide-react";
@@ -88,7 +90,11 @@ function ProductDetailsDialog({open,setOpen,productDetails,handleAddToCart}){
 
                     </div>
                     
-                    <div className="mt-6 flex gap-2">
+                    <div className="mt-10 flex flex-col gap-2">
+                        <Label>Write a review</Label>
+                        <div className="flex ">
+                            <StarRatingComponent/>
+                        </div>
                         <Input placeholder="Write a review" />
                         <Button>Submit</Button>
 

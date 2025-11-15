@@ -22,10 +22,10 @@ export const searchProducts = async(request,response)=>{
                 
             ]
         }
-        console.log("  keywor ",keyword);
+        // console.log("  keywor ",keyword);
         
         const searchResults = await Product.find(createSearchQuery)
-        console.log("search result ",searchResults);
+        // console.log("search result ",searchResults);
         
         response.status(201).json({
             success:true,

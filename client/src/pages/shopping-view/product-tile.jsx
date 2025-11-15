@@ -8,7 +8,8 @@ import { useSelector } from "react-redux";
 function ShoppingProductTile({product,handleProductDetails,handleAddToCart}){
     const {isLoading,productId} = useSelector(state=>state.shopCart)
 
-    // console.log(`${product.title}`,(product._id == productId))
+    console.log("productDetails ",product);
+    
     
 
     return(
