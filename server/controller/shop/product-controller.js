@@ -52,10 +52,10 @@ export const fetchFilteredProduct = async(request,response)=>{
 export const getProductDetails = async(request,response)=>{
     try{
         const {id} = request.params;
-        console.log(id);
+        // console.log(id);
         
         const res = await Product.findOne({_id:id});
-        console.log(res);
+        // console.log(res);
         
         if(!res){
             response.status(400).json({

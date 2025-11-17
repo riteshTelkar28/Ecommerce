@@ -6,14 +6,22 @@ const initialState = {
     reviews:[]
 }
 
-export const addReview = createAsyncThunk('/review/addReview',async(data)=>{
+export const addReview = createAsyncThunk('/review/addReview',async(data,{rejectWithValue})=>{
+    try{
     const result = await axios.post('http://localhost:5000/api/shop/review/add',data)
 
     return result?.data;
+    }catch(err){
+        return rejectWithValue({
+            message:err.response.data.message,
+            status:false
+        })
+        
+    }
 })
 
 export const getReview = createAsyncThunk('/review/getReview',async(productId)=>{
-    const result = await axios.post(`http://localhost:5000/api/shop/review/get/${productId}`)
+    const result = await axios.get(`http://localhost:5000/api/shop/review/get/${productId}`)
 
     return result?.data;
 })

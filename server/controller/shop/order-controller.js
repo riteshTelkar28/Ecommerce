@@ -25,7 +25,7 @@ const items = cartItems.map(item => ({
   quantity: item.quantity
 }));
 
-console.log("items ",items);
+// console.log("items ",items);
 // console.log("items is array);
 
     var create_payment_json={

@@ -31,7 +31,7 @@ export const updateOrderStatus= async(request,response)=>{
     try{
         const {id} = request.params;
         const {orderStatus} = request.body;
-        console.log('order status ',orderStatus);
+        // console.log('order status ',orderStatus);
         
         const orders = await Order.findById(id);
         // console.log("orders ",orders);

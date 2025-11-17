@@ -66,7 +66,7 @@ export const fetchProduct = async(request,response)=>{
 export const editProduct = async(request,response)=>{
     try{
         const {id} = request.params
-        console.log("id ",id)
+        // console.log("id ",id)
         const {image,title,description,category,brand,price,salePrice,totalStock} = request.body 
 
         const findProduct = await Product.findById(id)

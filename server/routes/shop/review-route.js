@@ -4,6 +4,6 @@ import { addProductReview, getProductReview } from '../../controller/shop/produc
 const reviewRouter = express.Router();
 
 reviewRouter.post('/add',addProductReview)
-reviewRouter.get('/:productId',getProductReview)
+reviewRouter.get('/get/:productId',getProductReview)
 
 export default reviewRouter;

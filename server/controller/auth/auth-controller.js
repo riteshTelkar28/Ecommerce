@@ -88,7 +88,7 @@ export const logoutUser = (request,response)=>{
 
 export const authenticateUser = async(request,response,next)=>{
     const token = request.cookies.token;
-    console.log("token ",token)
+    // console.log("token ",token)
     if(!token)  response.status(401).json({
         success:false,
         message:'not authenticated'
@@ -96,7 +96,7 @@ export const authenticateUser = async(request,response,next)=>{
 
     try{
         const decoded = jwt.verify(token,'CLIENT_SECRET_KEY')
-        console.log("decoded token ",decoded)
+        // console.log("decoded token ",decoded)
         request.user = decoded
         next()
     }catch(error){

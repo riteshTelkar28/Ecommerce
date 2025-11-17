@@ -41,7 +41,8 @@ export const addProductReview = async(request,response)=>{
 
         response.status(201).json({
             success:true,
-            data:newReview
+            data:newReview,
+            message:'Review given'
         })
 
 
@@ -57,7 +58,10 @@ export const addProductReview = async(request,response)=>{
 export const getProductReview = async(request,response)=>{
     try{
         const {productId} = request.params;
+        // console.log("request.params ",request.params);
+        
         const reviews = await Review.find({productId});
+        // console.log("review ",reviews)
 
         response.status(201).json({
             success:true,
