@@ -15,7 +15,7 @@ const initialAddressFormData = {
     pincode:'',
     notes:''
 }
-function Address({setCurrentSelectedAddress}){
+function Address({setCurrentSelectedAddress,selectedId}){
     const [formData,setFormData] = useState(initialAddressFormData)
 
     const [currentAddressId,setCurrentAddressId] = useState(null)
@@ -115,6 +115,7 @@ function Address({setCurrentSelectedAddress}){
                     <AddressCard addressInfo={singleAddress} handleDeleteAddress={handleDeleteAddress}
                     handleEditAddress={handleEditAddress} 
                     setCurrentSelectedAddress={setCurrentSelectedAddress}
+                    selectedId={selectedId}
                     />) : null
                 }
             </div>

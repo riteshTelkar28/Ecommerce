@@ -91,7 +91,7 @@ function ShoppingCheckout(){
                 />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5 p-5">
-                <Address setCurrentSelectedAddress={setCurrentSelectedAddress} />
+                <Address selectedId={currentSelectedAddress?._id} setCurrentSelectedAddress={setCurrentSelectedAddress} />
                 <div className="flex flex-col gap-4">
                     {
                         cartItems && cartItems?.items?.length>0 ?
@@ -107,7 +107,7 @@ function ShoppingCheckout(){
                         </div>
                     </div>
                     <div className="mt-4 w-full">
-                        <Button className={'w-full'} onClick={handleInitialPaypalPayment} >{isLoading ? <ThreeDots height={'40px'} width={'40px'} color="white" />: 'Checkout with Paypal'}</Button>
+                        <Button className={'w-full'} onClick={handleInitialPaypalPayment} >{isLoading ? <ThreeDots height={'40px'} width={'40px'} color="white" />: isPaymentStart ? 'Processing with paypal...' : 'Checkout with paypal' }</Button>
                     </div>
                 </div>
 

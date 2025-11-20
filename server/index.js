@@ -11,6 +11,8 @@ import orderRouter from './routes/shop/order-route.js';
 import adminOrderRouter from './routes/admin/order-route.js';
 import searchRouter from './routes/shop/search-routes.js';
 import reviewRouter from './routes/shop/review-route.js';
+import featureRouter from './routes/common/feature-route.js';
+
 
 var app = express()
 const PORT = process.env.PORT || 5000;
@@ -35,6 +37,7 @@ app.use(express.json())
 app.use('/api/auth',authrouter)
 app.use('/api/admin/products',productRouter)
 app.use('/api/admin/order',adminOrderRouter)
+app.use('/api/common/feature',featureRouter)
 app.use('/api/shop/products',shopProductRouter)
 app.use('/api/shop/cart',cartRouter)
 app.use('/api/shop/address',addressRouter)  
