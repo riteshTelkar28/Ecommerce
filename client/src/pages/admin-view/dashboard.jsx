@@ -23,7 +23,7 @@ function AdminDashboard(){
     useEffect(()=>{
         dispatch(getFeatureImage())
     },[dispatch])
-    console.log('featureImages ',featureImages)
+    // console.log('featureImages ',featureImages)
     return(
         <div>
             <h1>Upload Feature images</h1>

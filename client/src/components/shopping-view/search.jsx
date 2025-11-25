@@ -6,26 +6,29 @@ import { resetSearch, searchResult } from "@/store/shop/search-slice";
 import ShoppingProductTile from "@/pages/shopping-view/product-tile";
 import { toast } from "sonner";
 import { addToCart, fetchFromCart, setProductId } from "@/store/shop/cart-slice";
+import { TailSpin } from "react-loader-spinner";
 
 function SearchPage(){
     const [keyword,setKeyword] = useState('') 
     const [searchParams,setSearchParams] = useSearchParams();
-    const {searchResults} = useSelector(state=>state.shopSearch)
+    const {searchResults,isLoading} = useSelector(state=>state.shopSearch)
     const dispatch = useDispatch()
     const {cartItems} = useSelector(state=>state.shopCart)
     // console.log("searchParams",searchParams);
     const {user} = useSelector(state=>state.auth)
     useEffect(()=>{
-        if(keyword && keyword.trim() !== '' && keyword.trim().length > 3 ){
+        if(keyword && keyword.trim() !== "" && keyword.trim().length > 3 ){
             setTimeout(()=>{
                 setSearchParams(new URLSearchParams(`?keyword=${keyword}`))
                 dispatch(searchResult(keyword))
-            },1000)
+            },2000)
          } else{
+            setSearchParams(new URLSearchParams(`?keyword=${keyword}`))
             dispatch(resetSearch())
          }   
     },[keyword])
-
+    
+    // console.log('keyword ',keyword)
     // console.log("search Results ",searchResults);
     function handleAddToCart(getCurrentProductId,getTotalStock){
         // console.log("getCurrentProductId ",getCurrentProductId);
@@ -55,7 +58,7 @@ function SearchPage(){
         dispatch(setProductId(getCurrentProductId))
         dispatch(addToCart({userId:user.id,productId:getCurrentProductId,quantity:1})).then((data)=> {
             if(data?.payload?.success){
-                console.log("user ",user);
+                // console.log("user ",user);
                 dispatch(fetchFromCart(user?.id))
                 toast('Added to Cart ',{style:{color:'green',background:'white'}})
             }
@@ -78,6 +81,14 @@ function SearchPage(){
                     />
                 </div>
             </div>
+            {
+            isLoading ? <div className="flex items-center justify-center">
+                <TailSpin 
+                height={'80'}
+                width={'80'}
+                color="#4fa94d"
+            />
+            </div> :
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 ">
                 {
                     searchResults && searchResults.length ? 
@@ -85,6 +96,7 @@ function SearchPage(){
                     <h1>No Results found</h1>
                 }
             </div>
+            }
         </div>
     );
 }
